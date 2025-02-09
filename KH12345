@@ -1,0 +1,166 @@
+<template>
+  <div class="dashboard">
+    <!-- Row 1: Revenue & Subscriptions -->
+    <div class="row">
+      <div class="col-md-4">
+        <div class="kpi-card">
+          <h3>Monthly Pro Revenue</h3>
+          <p>{{ monthlyProRevenue | currency }}</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="kpi-card">
+          <h3>Annual Pro Revenue</h3>
+          <p>{{ annualProRevenue | currency }}</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="kpi-card">
+          <h3>1-to-1 Dietitian Subs</h3>
+          <p>{{ dietitianSubs }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: Active Users & Content Consumption -->
+    <div class="row">
+      <div class="col-md-4">
+        <div class="kpi-card">
+          <h3>Daily Active Users</h3>
+          <p>{{ dailyActiveUsers }}</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="kpi-card">
+          <h3>Weekly Active Users</h3>
+          <p>{{ weeklyActiveUsers }}</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="kpi-card">
+          <h3>Content Watched (hrs)</h3>
+          <p>{{ contentWatchedHours }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: Engagement & Program Completion -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="kpi-card">
+          <h3>Missed Daily Logins</h3>
+          <p>{{ missedLogins }}</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="kpi-card">
+          <h3>Week 1 Completion Rate</h3>
+          <p>{{ week1CompletionRate }}%</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 4: Example Trend Chart -->
+    <div class="row">
+      <div class="col-md-12 chart-container">
+        <chart-component :chart-data="chartData" :options="chartOptions"></chart-component>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+// Import the chart component (see ChartComponent.vue below)
+import ChartComponent from '@/components/ChartComponent.vue'
+
+export default {
+  name: 'Dashboard',
+  components: {
+    ChartComponent
+  },
+  data() {
+    return {
+      // Sample KPI data (replace with your real data or API calls)
+      monthlyProRevenue: 12000,
+      annualProRevenue: 150000,
+      dietitianSubs: 350,
+      dailyActiveUsers: 5000,
+      weeklyActiveUsers: 20000,
+      contentWatchedHours: 3000,
+      missedLogins: 150,
+      week1CompletionRate: 85, // as percentage
+      
+      // Example chart data (e.g., monthly trend for Pro Revenue)
+      chartData: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [
+          {
+            label: 'Monthly Pro Revenue',
+            data: [10000, 12000, 15000, 13000, 14000, 16000],
+            borderColor: '#2e8b57',
+            backgroundColor: 'rgba(46, 139, 87, 0.1)',
+            fill: true,
+            tension: 0.1
+          }
+        ]
+      },
+      chartOptions: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    }
+  },
+  filters: {
+    // Simple currency filter
+    currency(value) {
+      if (typeof value !== "number") return value;
+      return '$' + value.toLocaleString();
+    }
+  }
+}
+</script>
+
+<style scoped>
+.dashboard {
+  padding: 20px;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.col-md-4,
+.col-md-6,
+.col-md-12 {
+  padding: 10px;
+}
+.col-md-4 {
+  width: 33.33%;
+}
+.col-md-6 {
+  width: 50%;
+}
+.col-md-12 {
+  width: 100%;
+}
+.kpi-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+.kpi-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+.kpi-card p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+}
+.chart-container {
+  height: 300px; /* Adjust as needed */
+}
+</style>
